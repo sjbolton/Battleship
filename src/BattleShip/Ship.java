@@ -2,6 +2,17 @@ package BattleShip;
 
 import java.util.ArrayList;
 
+/*
+ * 
+ *	#	Class of ship	Size
+ *	1	Carrier			5
+ *	1	Battleship		4
+ *	1	Cruiser			3
+ *	1	Submarine		3
+ *	1	Destroyer		2
+ * 
+ */
+
 abstract public class Ship
 {
 	protected ArrayList< Cell > position = null;
