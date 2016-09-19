@@ -75,53 +75,76 @@ public class GameBoard
 		int ypos = sternLocation.y;
 		int xpos = sternLocation.x;
 		
+		ArrayList<Cell> shipPos = new ArrayList<Cell>(s.getLength());
+		
 		//check to see if it fits on the board
-		if((bowDirection == HEADING.NORTH) && (ypos - s.getLength() > 0)){
+		if((bowDirection == HEADING.NORTH) && (ypos - s.getLength()+1 >= 0)){
 			//if it enters the inside of the if statement, it fits on the board. Now check for collisions
 			for(int i = ypos; i > ypos - s.getLength(); i--){
-				if (cells.get(i).get(xpos).getShip() != null)
+				if (cells.get(i).get(xpos).getShip() != null){
+					System.out.println("Cannot add " + s.getName() + " to (" + xpos + "," + ypos + "). "
+							+ "Overlaps with " + cells.get(i).get(xpos).getShip().getName() + ".");
 					return false;
+				}
 			}
 			//there are no collisions. Add it and return true
 			for(int i = ypos; i > ypos - s.getLength(); i--){
 				cells.get(i).get(xpos).setShip(s);
+				shipPos.add(cells.get(i).get(xpos));
 			}
+			s.position = shipPos;
 			return true;
 		}
 		else if ((bowDirection == HEADING.SOUTH) && (ypos + s.getLength() <= rowCount)){
 			//if it enters the inside of the if statement, it fits on the board. Now check for collisions
 			for(int i = ypos; i < ypos + s.getLength(); i++){
-				if (cells.get(i).get(xpos).getShip() != null)
+				if (cells.get(i).get(xpos).getShip() != null){
+					System.out.println("Cannot add " + s.getName() + " to (" + xpos + "," + ypos + "). "
+							+ "Overlaps with " + cells.get(i).get(xpos).getShip().getName() + ".");
 					return false;
+				}
+
 			}
 			//there are no collisions. Add it and return true
 			for(int i = ypos; i < ypos + s.getLength(); i++){
 				cells.get(i).get(xpos).setShip(s);
+				shipPos.add(cells.get(i).get(xpos));
 			}
+			s.position = shipPos;
 			return true;
 		}
-		else if ((bowDirection == HEADING.WEST) && (xpos - s.getLength() >= 0)){
+		else if ((bowDirection == HEADING.WEST) && (xpos - s.getLength()+1 >= 0)){
 			//if it enters the inside of the if statement, it fits on the board. Now check for collisions
 			for(int i = xpos; i > xpos - s.getLength(); i--){
-				if (cells.get(ypos).get(i).getShip() != null)
+				if (cells.get(ypos).get(i).getShip() != null){
+					System.out.println("Cannot add " + s.getName() + " to (" + xpos + "," + ypos + "). "
+							+ "Overlaps with " + cells.get(ypos).get(i).getShip().getName() + ".");
 					return false;
+				}
 			}
 			//there are no collisions. Add it and return true
 			for(int i = xpos; i > xpos - s.getLength(); i--){
 				cells.get(ypos).get(i).setShip(s);
+				shipPos.add(cells.get(ypos).get(i));
 			}
+			s.position = shipPos;
 			return true;
 		}
 		else if ((bowDirection == HEADING.EAST) && (xpos + s.getLength() <= colCount)) {
 			//if it enters the inside of the if statement, it fits on the board. Now check for collisions
 			for(int i = xpos; i < xpos + s.getLength(); i++){
-				if (cells.get(ypos).get(i).getShip() != null)
+				if (cells.get(ypos).get(i).getShip() != null){
+					System.out.println("Cannot add " + s.getName() + " to (" + xpos + "," + ypos + "). "
+							+ "Overlaps with " + cells.get(ypos).get(i).getShip().getName() + ".");
 					return false;
+				}
 			}
 			//there are no collisions. Add it and return true
 			for(int i = xpos; i < xpos + s.getLength(); i++){
 				cells.get(ypos).get(i).setShip(s);
+				shipPos.add(cells.get(ypos).get(i));
 			}
+			s.position = shipPos;
 			return true;
 		}
 		else{
@@ -130,16 +153,28 @@ public class GameBoard
 			return false;
 		}
 	}
-	/*
-	//Returns A reference to a ship, if that ship was struck by a missle.
+	
+	//Returns A reference to a ship, if that ship was struck by a missile.
 	//The returned ship can then be used to print the name of the ship which
 	//was hit to the player who hit it.
 	//Ensure you handle missiles that may fly off the grid
 	public Ship fireMissle( Position coordinate )
 	{
+		//create pointers for simplicity
+		int xpos = coordinate.x;
+		int ypos = coordinate.y;
+		Cell hitCell;
 		
+		//check to see if x and y are on board
+		if (xpos < 0 || ypos < 0 || xpos >= rowCount || ypos >= colCount){
+			return null;
+		}
+		
+		hitCell = cells.get(ypos).get(xpos);
+		hitCell.hasBeenStruckByMissile(true);
+		return cells.get(ypos).get(xpos).getShip();
 	}
-	*/
+	
 	//Here's a simple driver that should work without touching any of the code below this point
 	public static void main( String [] args )
 	{
@@ -148,37 +183,42 @@ public class GameBoard
 		System.out.println( b.draw() );
 		
 		Ship s = new Cruiser( "Cruiser" );
-		if( b.addShip(s, new Position(3,6), HEADING.WEST ) )
+		if( b.addShip(s, new Position(3,6), HEADING.WEST) )
 			System.out.println( "Added " + s.getName() + " Location is " );
 		else
 			System.out.println( "Failed to add " + s.getName() );
 		
-		System.out.println( b.draw() );
+		//System.out.println( b.draw() );
 		
 		s = new Destroyer( "Vader" );
-		if( b.addShip(s, new Position(3,1), HEADING.NORTH ) )
+		if( b.addShip(s, new Position(3,5), HEADING.NORTH ) )
 			System.out.println( "Added " + s.getName() + " Location is " );
 		else
 			System.out.println( "Failed to add " + s.getName() );
 		
-		System.out.println( b.draw() );
-		/*
+		//System.out.println( b.draw() );
+		
 		b.fireMissle( new Position(3,5) );
 		System.out.println( b.draw() );
 		b.fireMissle( new Position(3,4) );
 		System.out.println( b.draw() );
-		b.fireMissle( new Position(3,3) );
+		b.fireMissle( new Position(3,3));
 		System.out.println( b.draw() );
 		
-		b.fireMissle( new Position(0,6) );
-		b.fireMissle( new Position(1,6) );
-		b.fireMissle( new Position(2,6) );
-		b.fireMissle( new Position(3,6) );
+		b.fireMissle( new Position(0,6));
+		System.out.println( b.draw() );
+		b.fireMissle( new Position(1,6));
+		System.out.println( b.draw() );
+		b.fireMissle( new Position(2,6));
+		System.out.println( b.draw() );
+		b.fireMissle( new Position(3,6));
 		System.out.println( b.draw() );
 		
-		b.fireMissle( new Position(6,6) );
+		b.fireMissle( new Position(6,6));
 		System.out.println( b.draw() );
-		*/
+		
+		b.fireMissle( new Position(10,15));
+		System.out.println( b.draw() );
 	}
 
 }

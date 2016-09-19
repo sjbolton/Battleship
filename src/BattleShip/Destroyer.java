@@ -17,6 +17,6 @@ public class Destroyer extends Ship{
 
 	@Override
 	public int getLength() {
-		return 2;
+		return 3;
 	}
 }
