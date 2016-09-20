@@ -93,6 +93,7 @@ public class GameBoard
 				shipPos.add(cells.get(i).get(xpos));
 			}
 			s.position = shipPos;
+			myShips.add(s);
 			return true;
 		}
 		else if ((bowDirection == HEADING.SOUTH) && (ypos + s.getLength() <= rowCount)){
@@ -111,6 +112,7 @@ public class GameBoard
 				shipPos.add(cells.get(i).get(xpos));
 			}
 			s.position = shipPos;
+			myShips.add(s);
 			return true;
 		}
 		else if ((bowDirection == HEADING.WEST) && (xpos - s.getLength()+1 >= 0)){
@@ -128,6 +130,7 @@ public class GameBoard
 				shipPos.add(cells.get(ypos).get(i));
 			}
 			s.position = shipPos;
+			myShips.add(s);
 			return true;
 		}
 		else if ((bowDirection == HEADING.EAST) && (xpos + s.getLength() <= colCount)) {
@@ -145,6 +148,7 @@ public class GameBoard
 				shipPos.add(cells.get(ypos).get(i));
 			}
 			s.position = shipPos;
+			myShips.add(s);
 			return true;
 		}
 		else{

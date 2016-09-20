@@ -45,11 +45,21 @@ public class Client
 	//Returns a bool, true iff all of this client's ships are destroyed
 	boolean allMyShipsAreDestroyed()
 	{
+		for (Ship s : board.myShips){
+			if (s.isAlive() == true)
+				return false;
+		}
+		return true;
 	}
 
 	//Returns a bool, true iff all of the opponent's ships are destroyed
 	boolean allEnemyShipsAreDestroyed()
 	{
+		for (Ship s : targets.myShips){
+			if (s.isAlive() == true)
+				return false;
+		}
+		return true;
 	}
 
 	//"F 2 4" = Fire command
@@ -60,9 +70,17 @@ public class Client
 		
 	}
 	
-	//When a fire command is typed, this method parses the coordinates and launches a missle at the enemy
+	//When a fire command is typed, this method parses the coordinates and launches a missile at the enemy
 	boolean processFireCmd( String [] s )
 	{
+		if (s[0].equals("F")){
+			Position pos = new Position(Integer.parseInt(s[1]), Integer.parseInt(s[2]));
+			targets.fireMissle(pos);
+			return true;
+		}
+		else{
+			return false;
+		}	
 	}
 	
 	//Send a message to the opponent

@@ -23,6 +23,11 @@ public class GameManager
 	//so a client is able to use this method to get a reference to his opponent
 	public Client getOpponent( Client me )
 	{
+		for (Client opponent : clients ){
+			if (!opponent.equals(me))
+				return opponent;
+		}
+		return null;
 	}
 	
 	//In a asychronous nature, begin playing the game. This should only occur after 
@@ -45,6 +50,21 @@ public class GameManager
 	//Don't forget about try/finally blocks, if needed
 	boolean waitFor2PlayersToConnect() throws IOException
 	{
+		try{
+			listener = new ServerSocket(4000);
+			while (clients.size() < 2){
+				Socket clientSocket = listener.accept();
+				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				Client client = new Client(in, out, this);
+				clients.add(client);
+			}
+			
+		}catch (IOException e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	//let players initialize their name, and gameboard here. This should be done asynchronously
