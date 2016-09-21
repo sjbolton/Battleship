@@ -43,7 +43,7 @@ public class GameBoard
 		for (int i=0; i < rowCount; i++){
 			str.append("-");
 		}
-		str.append("+\n");
+		str.append("+" + LINE_END);
 		
 		//Drawing inside
 		for (int i=0; i < colCount; i++){
@@ -51,7 +51,7 @@ public class GameBoard
 			for (int j=0; j < rowCount; j++){
 				str.append(cells.get(i).get(j).draw());
 			}
-			str.append("|\n");
+			str.append("|" + LINE_END);
 		}
 		
 		
@@ -60,7 +60,7 @@ public class GameBoard
 				for (int i=0; i < rowCount; i++){
 			str.append("-");
 		}
-		str.append("+\n");
+		str.append("+" + LINE_END);
 				return str.toString();
 	}
 	
@@ -176,7 +176,7 @@ public class GameBoard
 		
 		hitCell = cells.get(ypos).get(xpos);
 		hitCell.hasBeenStruckByMissile(true);
-		return cells.get(ypos).get(xpos).getShip();
+		return hitCell.getShip();
 	}
 	
 	//Here's a simple driver that should work without touching any of the code below this point

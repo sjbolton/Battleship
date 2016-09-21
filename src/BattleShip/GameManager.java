@@ -30,7 +30,7 @@ public class GameManager
 		return null;
 	}
 	
-	//In a asychronous nature, begin playing the game. This should only occur after 
+	//In a asynchronous nature, begin playing the game. This should only occur after 
 	//the players have been fully initialized.
 	public void playGame()
 	{
@@ -70,6 +70,12 @@ public class GameManager
 	//let players initialize their name, and gameboard here. This should be done asynchronously
 	void initPlayers() throws IOException
 	{
+		clients.parallelStream().forEach( client -> 
+		{
+			try{ client.initPlayer(); }
+			catch( IOException e ) { e.printStackTrace(); } 
+		} );
+		
 	}
 	
 	
